@@ -1,0 +1,40 @@
+---
+name: Pipeline - Create labels
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+
+  # More info: https://github.com/EndBug/label-sync.
+  labels:
+    runs-on: ubuntu-latest
+
+    steps:
+      # More info: https://github.com/step-security/harden-runner.
+      - name: 🔰 Harden Runner
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+            raw.githubusercontent.com:443
+
+      # Docs: https://github.com/actions/checkout/
+      - name: 📥 Checkout repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Creation de labels
+        uses: EndBug/label-sync@52074158190acb45f3077f9099fea818aa43f97a
+        with:
+          delete-other-labels: true
+          config-file: 'https://raw.githubusercontent.com/rypi-dev/github-template/main/.github/config/workflows/create-labels.yml'

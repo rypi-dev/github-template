@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: 2025 Rypî Projects <https://github.com/rypi-dev/>
+#
+# SPDX-License-Identifier: MIT
+[alias]
+  cmsg = commit -s -m
+  camend = commit -s --amend

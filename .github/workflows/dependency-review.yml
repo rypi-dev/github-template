@@ -1,0 +1,29 @@
+---
+name: Pipeline - Dependency Review
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+    # Docs: https://github.com/step-security/harden-runner/
+      - name: 🔰 Harden Runner
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911
+        with:
+          egress-policy: audit
+
+      # Docs: https://github.com/actions/checkout/
+      - name: 📥 Checkout repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      
+      # Docs:
+      - name: Dependency Review
+        uses: actions/dependency-review-action@

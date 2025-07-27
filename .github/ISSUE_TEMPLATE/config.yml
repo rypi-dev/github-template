@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Rypî Development Questions and Discussions
+    url: https://github.com/orgs/rypi-dev/discussions
+    about: Please ask and answer questions here.
+  - name: 💬 Join the Discord community
+    url: https://discord.com/invite/rypi
+    about: Come and chat with all the members of the community !

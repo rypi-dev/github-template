@@ -1,0 +1,42 @@
+---
+name: Pipeline - Compress Images
+on: pull_request
+
+permissions:
+  pull-requests: write
+
+jobs:
+  compress-img:
+    runs-on: ubuntu-latest
+
+    steps:
+      # More info: https://github.com/step-security/harden-runner.
+      - name: 🔰 Harden Runner
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911
+        with:
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+      
+      # More info: https://github.com/peter-murray/workflow-application-token-action.
+      - name: ⚠️ Get Token
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@d17e3a9a36850ea89f35db16c1067dd2b68ee343
+        with:
+          application_id: ${{ secrets.ID_COMPRESSIMGBOT }}
+          application_private_key: ${{ secrets.PEM_COMPRESSIMGBOT }}
+
+      # Docs: https://github.com/actions/checkout/
+      - name: 📥 Checkout repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      # More info: https://github.com/marketplace/actions/webp-optimizer-actions
+      - name: Compress Images
+        uses: calibreapp/webp-optimizer@737ceeaeed61e17b8d358358a303f1b8d177b779
+        with:
+          githubToken: ${{ steps.get_token.outputs.token }}
